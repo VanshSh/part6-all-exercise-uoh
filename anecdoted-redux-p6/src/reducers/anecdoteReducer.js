@@ -7,8 +7,20 @@ const anecdotesAtStart = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
 ]
 
+// function to create new anecdote object
+export function createAnecdote(content) {
+  return {
+    type: 'ADD_ANECDOTE',
+    payload: { content },
+  }
+}
+export function voteAnecdote(id) {
+  return {
+    type: 'VOTE',
+    payload: { id },
+  }
+}
 const getId = () => (100000 * Math.random()).toFixed(0)
-
 const asObject = (anecdote) => {
   return {
     content: anecdote,
