@@ -31,23 +31,10 @@ const reducer = (state = initialState, action) => {
         }
         return anecdote
       })
-    case 'OK':
-      return {
-        ...state,
-        ok: state.ok + 1,
-      }
-    case 'BAD':
-      return {
-        ...state,
-        bad: state.bad + 1,
-      }
-    case 'ZERO':
-      return {
-        ...state,
-        good: 0,
-        ok: 0,
-        bad: 0,
-      }
+    case 'ADD_ANECDOTE':
+      const finalAnecdote = asObject(action.payload.content)
+
+      return [...state, finalAnecdote]
     default:
       return state
   }

@@ -3,12 +3,16 @@ import { useSelector, useDispatch } from 'react-redux'
 const App = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector((state) => state)
-  console.log('😇 L-6 in App.js=> ', anecdotes)
 
   const vote = (id) => {
     dispatch({ type: 'VOTE', payload: { id } })
   }
-
+  const addNoteHandler = (event) => {
+    event.preventDefault()
+    const content = event.target.content.value
+    dispatch({ type: 'ADD_ANECDOTE', payload: { content } })
+    event.target.content.value = ''
+  }
   return (
     <div>
       <h2>Anecdotes</h2>
@@ -23,9 +27,9 @@ const App = () => {
         </div>
       ))}
       <h2>create new</h2>
-      <form>
+      <form onSubmit={addNoteHandler}>
         <div>
-          <input />
+          <input name='content' />
         </div>
         <button>create</button>
       </form>
