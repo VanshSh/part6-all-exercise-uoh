@@ -9,6 +9,7 @@ const App = () => {
 
   const result = useQuery('anecdotes', getAnecdotes, {
     retry: false,
+    refetchOnWindowFocus: false,
   })
 
   const anecdotes = result.data
