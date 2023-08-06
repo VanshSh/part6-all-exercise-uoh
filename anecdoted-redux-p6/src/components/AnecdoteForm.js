@@ -3,7 +3,7 @@ import { createAnecdoteThunk } from '../reducers/anecdoteReducer'
 
 import {
   hideNotification,
-  showNotification,
+  setNotification,
 } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
@@ -12,12 +12,7 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.content.value
     dispatch(createAnecdoteThunk(content))
-    dispatch(
-      showNotification({
-        type: 'success',
-        message: 'New anecdote added!',
-      })
-    )
+    dispatch(setNotification(`✉️ You created ${content}`, 3))
 
     setTimeout(() => {
       dispatch(hideNotification())

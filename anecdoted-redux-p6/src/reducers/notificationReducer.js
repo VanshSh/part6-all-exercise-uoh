@@ -1,29 +1,38 @@
+// notifications.js
+
 import { createSlice } from '@reduxjs/toolkit'
 
 const notificationSlice = createSlice({
   name: 'notification',
   initialState: {
     message: '',
-    type: '',
   },
   reducers: {
-    showNotification(state, action) {
-      const { message, type } = action.payload
+    setNotification(state, action) {
+      const message = action.payload
       return {
         ...state,
         message,
-        type,
       }
     },
     hideNotification(state, action) {
       return {
         ...state,
         message: '',
-        type: '',
       }
     },
   },
 })
 
-export const { showNotification, hideNotification } = notificationSlice.actions
+export const { setNotification, hideNotification } = notificationSlice.actions
+
+// Async action creator for displaying notification for a specific duration
+export const displayNotification = (message, timeInSeconds) => (dispatch) => {
+  dispatch(setNotification(message))
+
+  setTimeout(() => {
+    dispatch(hideNotification())
+  }, timeInSeconds * 1000)
+}
+
 export default notificationSlice

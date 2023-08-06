@@ -1,4 +1,4 @@
-const Notification = ({ message, type }) => {
+const Notification = ({ message }) => {
   const style = {
     border: 'solid',
     padding: 10,
@@ -6,8 +6,7 @@ const Notification = ({ message, type }) => {
   }
   return (
     <div style={style}>
-      <h3> ✉️ Message: {message}</h3>
-      <p>Type: {type}</p>
+      <h3> {message}</h3>
     </div>
   )
 }

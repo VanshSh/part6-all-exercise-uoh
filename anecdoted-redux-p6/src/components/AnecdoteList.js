@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote, getAllAnecdotes } from '../reducers/anecdoteReducer'
-import {
-  hideNotification,
-  showNotification,
-} from '../reducers/notificationReducer'
+import { displayNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   // Initialize a flag to track whether the notification is visible or not
-  const [notificationVisible, setNotificationVisible] = useState(false)
+
   const dispatch = useDispatch()
   const anecdotes = useSelector((state) => state)
   const anecdotesArr = anecdotes.anecdoteList
@@ -21,36 +18,10 @@ const AnecdoteList = () => {
       )
     : anecdotesArr
 
-  // Define the debounced function
-  const debounce = (func, delay) => {
-    let timeoutId
-    return (...args) => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => func(...args), delay)
-    }
-  }
-
-  // Define the debounced hideNotification function
-  const debouncedHideNotification = debounce(() => {
-    dispatch(hideNotification())
-    // Reset the notificationVisible flag after hiding the notification
-    setNotificationVisible(false)
-  }, 5000)
-
   // Vote the anecdote
   const vote = (id, content) => {
     dispatch(voteAnecdote(id))
-
-    if (!notificationVisible) {
-      // Call the debounced showNotification function
-      dispatch(
-        showNotification({ message: `voted for ${content}`, type: 'Voted' })
-      )
-      setNotificationVisible(true)
-
-      // Call the debounced hideNotification function after 5 seconds
-      debouncedHideNotification()
-    }
+    dispatch(displayNotification(`👍 You voted '${content}'`, 5))
   }
 
   // Sort the filtered anecdotes based on votes in descending order

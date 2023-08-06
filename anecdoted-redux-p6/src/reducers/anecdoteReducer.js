@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import anedoteService from '../services/anecdote'
-
 // const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteSlice = createSlice({
