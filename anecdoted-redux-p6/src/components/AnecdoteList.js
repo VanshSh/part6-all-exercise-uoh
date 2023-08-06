@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
+import {
+  hideNotification,
+  showNotification,
+} from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
@@ -15,10 +19,41 @@ const AnecdoteList = () => {
       )
     : anecdotesArr
 
-  // Vote the anecdote
-  const vote = (id) => {
-    dispatch(voteAnecdote(id))
+  // Define the debounced function
+  const debounce = (func, delay) => {
+    let timeoutId
+    return (...args) => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => func(...args), delay)
+    }
   }
+
+  // Initialize a flag to track whether the notification is visible or not
+  const [notificationVisible, setNotificationVisible] = useState(false)
+
+  // Define the debounced hideNotification function
+  const debouncedHideNotification = debounce(() => {
+    dispatch(hideNotification())
+    // Reset the notificationVisible flag after hiding the notification
+    setNotificationVisible(false)
+  }, 5000)
+
+  // Vote the anecdote
+  const vote = (id, content) => {
+    dispatch(voteAnecdote(id))
+
+    if (!notificationVisible) {
+      // Call the debounced showNotification function
+      dispatch(
+        showNotification({ message: `voted for ${content}`, type: 'Voted' })
+      )
+      setNotificationVisible(true)
+
+      // Call the debounced hideNotification function after 5 seconds
+      debouncedHideNotification()
+    }
+  }
+
   // Sort the filtered anecdotes based on votes in descending order
   const orderedAnecdotes = [...filteredAnecdotes].sort(
     (a, b) => b.votes - a.votes
@@ -32,7 +67,9 @@ const AnecdoteList = () => {
           <div>
             has {anecdote.votes}
             <br />
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote.content)}>
+              vote
+            </button>
           </div>
           <hr />
         </div>

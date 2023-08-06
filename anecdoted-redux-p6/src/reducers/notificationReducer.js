@@ -15,8 +15,15 @@ const notificationSlice = createSlice({
         type,
       }
     },
+    hideNotification(state, action) {
+      return {
+        ...state,
+        message: '',
+        type: '',
+      }
+    },
   },
 })
 
-export const { showNotification } = notificationSlice.actions
+export const { showNotification, hideNotification } = notificationSlice.actions
 export default notificationSlice
