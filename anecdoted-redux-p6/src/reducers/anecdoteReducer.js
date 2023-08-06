@@ -34,5 +34,12 @@ export const getAllAnecdotes = () => {
   }
 }
 
+export const createAnecdoteThunk = (content) => {
+  return async (dispatch) => {
+    const res = await anedoteService.create(content)
+    dispatch(createAnecdote(res))
+  }
+}
+
 // This will go to the store so that updated state value can be used
 export default anecdoteSlice
