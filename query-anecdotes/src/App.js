@@ -1,10 +1,17 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { useQuery } from 'react-query'
-import { getAnecdotes } from './request'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { getAnecdotes, updateAnecdote } from './request'
 const App = () => {
+  const queryClient = useQueryClient()
+  const updateNoteMutation = useMutation(updateAnecdote, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('anecdotes')
+    },
+  })
   const handleVote = (anecdote) => {
-    console.log('vote')
+    anecdote.votes += 1
+    updateNoteMutation.mutate(anecdote)
   }
 
   const result = useQuery('anecdotes', getAnecdotes, {

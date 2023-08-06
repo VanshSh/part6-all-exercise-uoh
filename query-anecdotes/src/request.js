@@ -16,9 +16,14 @@ export const getAnecdotes = () => {
       throw err // Re-throw the error to be caught in the component using the query
     })
 }
-export const createAnecdote = (newNote) =>
-  axios
-    .post(baseURL, newNote)
+export const createAnecdote = (anecdote) => {
+  const anecdoteObj = {
+    content: anecdote.content,
+    votes: 0,
+  }
+
+  return axios
+    .post(baseURL, anecdoteObj)
     .then((res) => {
       if (res.status === 201) {
         return res.data
@@ -31,3 +36,10 @@ export const createAnecdote = (newNote) =>
       console.log('😇 L-24 in request.js=> ', err.message)
       throw err
     })
+}
+
+export const updateAnecdote = (updatedAnecdote) => {
+  return axios
+    .put(`${baseURL}/${updatedAnecdote.id}`, updatedAnecdote)
+    .then((res) => res.data)
+}
