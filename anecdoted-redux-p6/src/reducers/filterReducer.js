@@ -1,17 +1,13 @@
-export function filterAncedote(query) {
-  return {
-    type: 'FILTER_ANECDOTE',
-    payload: { query },
-  }
-}
-const filterReducer = (state = null, action) => {
-  switch (action.type) {
-    case 'FILTER_ANECDOTE':
-      return action.payload.query
+import { createSlice } from '@reduxjs/toolkit'
 
-    default:
-      return state
-  }
-}
+const filterSlice = createSlice({
+  name: 'Filter',
+  initialState: null,
+  reducers: {
+    filterAncedote: (state, action) => action.payload,
+  },
+})
 
-export default filterReducer
+export const { filterAncedote } = filterSlice.actions
+
+export default filterSlice
