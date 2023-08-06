@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { voteAnecdote, getAllAnecdotes } from '../reducers/anecdoteReducer'
+import anedoteService from '../services/anecdote'
 import {
   hideNotification,
   showNotification,
 } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
+  // Initialize a flag to track whether the notification is visible or not
+  const [notificationVisible, setNotificationVisible] = useState(false)
   const dispatch = useDispatch()
   const anecdotes = useSelector((state) => state)
   const anecdotesArr = anecdotes.anecdoteList
@@ -27,9 +30,6 @@ const AnecdoteList = () => {
       timeoutId = setTimeout(() => func(...args), delay)
     }
   }
-
-  // Initialize a flag to track whether the notification is visible or not
-  const [notificationVisible, setNotificationVisible] = useState(false)
 
   // Define the debounced hideNotification function
   const debouncedHideNotification = debounce(() => {
@@ -59,10 +59,17 @@ const AnecdoteList = () => {
     (a, b) => b.votes - a.votes
   )
 
+  useEffect(() => {
+    anedoteService
+      .getAll()
+      .then((anecdote) => dispatch(getAllAnecdotes(anecdote)))
+  }, [dispatch])
+
   return (
     <div>
       {orderedAnecdotes.map((anecdote) => (
         <div key={anecdote.id}>
+          {anecdote.id}
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
