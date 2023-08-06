@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import anedoteService from '../services/anecdote'
 
 // const initialState = anecdotesAtStart.map(asObject)
 
@@ -6,7 +7,7 @@ const anecdoteSlice = createSlice({
   name: 'anecdote',
   initialState: [],
   reducers: {
-    getAllAnecdotes(state, action) {
+    showAllAnecdotes(state, action) {
       return state.concat(...action.payload)
     },
     createAnecdote(state, action) {
@@ -21,8 +22,17 @@ const anecdoteSlice = createSlice({
 })
 
 // This will be used to call the function to change the state
-export const { createAnecdote, voteAnecdote, getAllAnecdotes } =
+export const { createAnecdote, voteAnecdote, showAllAnecdotes } =
   anecdoteSlice.actions
+
+// Async functions using in built redux thunk
+export const getAllAnecdotes = () => {
+  return async (dispatch) => {
+    anedoteService
+      .getAll()
+      .then((anecdote) => dispatch(showAllAnecdotes(anecdote)))
+  }
+}
 
 // This will go to the store so that updated state value can be used
 export default anecdoteSlice

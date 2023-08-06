@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote, getAllAnecdotes } from '../reducers/anecdoteReducer'
-import anedoteService from '../services/anecdote'
 import {
   hideNotification,
   showNotification,
@@ -58,18 +57,14 @@ const AnecdoteList = () => {
   const orderedAnecdotes = [...filteredAnecdotes].sort(
     (a, b) => b.votes - a.votes
   )
-
   useEffect(() => {
-    anedoteService
-      .getAll()
-      .then((anecdote) => dispatch(getAllAnecdotes(anecdote)))
+    dispatch(getAllAnecdotes())
   }, [dispatch])
 
   return (
     <div>
       {orderedAnecdotes.map((anecdote) => (
         <div key={anecdote.id}>
-          {anecdote.id}
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
