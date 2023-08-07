@@ -15,7 +15,7 @@ const notificationReducer = (state, action) => {
     case 'CREATED':
       return {
         ...state,
-        message: `anecdote ${action.message} created`,
+        message: `anecdote ${action.message} `,
       }
     case 'DELETED':
       return {

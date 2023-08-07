@@ -13,6 +13,12 @@ const AnecdoteForm = () => {
       const anecdotes = queryClient.getQueryData('anecdotes')
       queryClient.setQueryData('anecdotes', anecdotes.concat(newAnecdote))
     },
+    onError: () => {
+      notificationMsgDispatch({
+        type: 'CREATED',
+        message: 'too short , must have length  or more.',
+      })
+    },
   })
 
   const onCreate = (event) => {
@@ -23,7 +29,7 @@ const AnecdoteForm = () => {
 
     notificationMsgDispatch({
       type: 'CREATED',
-      message: content,
+      message: ` ${content} created successfully`,
     })
 
     setTimeout(() => {
@@ -37,7 +43,7 @@ const AnecdoteForm = () => {
     <div>
       <h3>create new</h3>
       <form onSubmit={onCreate}>
-        <input name='anecdote' minLength='5' />
+        <input name='anecdote' />
         <button type='submit'>create</button>
       </form>
     </div>
